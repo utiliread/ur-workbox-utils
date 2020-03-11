@@ -1,0 +1,39 @@
+{
+    "name": "ur-workbox-utils",
+    "version": "0.0.0",
+    "description": "Convenient utils for workbox",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint . --ext .ts",
+        "precommit": "npm run lint"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/utiliread/ur-workbox-utils.git"
+    },
+    "keywords": [
+        "workbox",
+        "utils",
+        "templatedURLs"
+    ],
+    "author": "Rasmus Melchior Jacobsen <rmja@laesoe.org>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/utiliread/ur-workbox-utils/issues"
+    },
+    "homepage": "https://github.com/utiliread/ur-workbox-utils#readme",
+    "devDependencies": {
+        "@types/glob": "^7.1.1",
+        "@types/node": "^13.9.0",
+        "@typescript-eslint/eslint-plugin": "^2.23.0",
+        "@typescript-eslint/parser": "^2.23.0",
+        "eslint": "^6.8.0",
+        "typescript": "^3.7.3"
+    },
+    "dependencies": {
+        "glob": "^7.1.6",
+        "upath": "^1.2.0"
+    }
+}
