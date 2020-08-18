@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addTemplatedURLs = void 0;
 var file_details_1 = require("./file-details");
 var defaultGlobOptions = {
     globDirectory: "./",

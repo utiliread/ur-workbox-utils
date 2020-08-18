@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFileDetails = exports.getCompositeDetails = exports.getStringDetails = void 0;
 var crypto = require("crypto");
 var fs = require("fs");
 var glob = require("glob");

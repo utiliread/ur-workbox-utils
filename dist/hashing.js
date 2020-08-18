@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFileHash = exports.getDataHash = void 0;
 var crypto = require("crypto");
 var fs = require("fs");
 exports.getDataHash = function (data) {
