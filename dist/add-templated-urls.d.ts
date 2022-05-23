@@ -1,15 +1,5 @@
 import { GlobOptions } from "./file-details";
-export interface ManifestEntry {
-    revision: string;
-    url: string;
-}
-declare type WebpackManifestTransform = (originalManifest: ReadonlyArray<ManifestEntry>) => {
-    manifest: (ManifestEntry & {
-        size: number;
-    })[];
-    warnings?: string[] | undefined;
-};
+import type { ManifestTransform } from "workbox-build";
 export declare function addTemplatedURLs(templatedURLs: {
     [url: string]: string | string[];
-}, globOptions?: Partial<GlobOptions>): WebpackManifestTransform;
-export {};
+}, globOptions?: Partial<GlobOptions>): ManifestTransform;
