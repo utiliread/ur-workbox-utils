@@ -40,11 +40,10 @@ function addTemplatedURLs(templatedURLs, globOptions) {
                 size: x.size,
             };
         }));
-        var result = {
+        return {
             manifest: manifest,
             warnings: warnings,
         };
-        return result;
     };
     return transform;
 }
