@@ -6,14 +6,15 @@ var fs = require("fs");
 var glob = require("glob");
 var upath = require("upath");
 var hashing_1 = require("./hashing");
-exports.getStringDetails = function (url, value) {
+var getStringDetails = function (url, value) {
     return {
         file: url,
-        hash: hashing_1.getDataHash(value),
+        hash: (0, hashing_1.getDataHash)(value),
         size: value.length,
     };
 };
-exports.getCompositeDetails = function (url, dependencyDetails) {
+exports.getStringDetails = getStringDetails;
+var getCompositeDetails = function (url, dependencyDetails) {
     var md5 = crypto.createHash("md5");
     var totalSize = 0;
     for (var _i = 0, dependencyDetails_1 = dependencyDetails; _i < dependencyDetails_1.length; _i++) {
@@ -24,7 +25,8 @@ exports.getCompositeDetails = function (url, dependencyDetails) {
     var hash = md5.digest("hex");
     return { file: url, hash: hash, size: totalSize };
 };
-exports.getFileDetails = function (globPattern, globOptions) {
+exports.getCompositeDetails = getCompositeDetails;
+var getFileDetails = function (globPattern, globOptions) {
     // See https://github.com/GoogleChrome/workbox/blob/master/packages/workbox-build/src/lib/get-file-details.js
     var globbedFiles = glob.sync(globPattern, {
         cwd: globOptions.globDirectory,
@@ -45,12 +47,15 @@ exports.getFileDetails = function (globPattern, globOptions) {
         if (size === null) {
             return null;
         }
-        var hash = hashing_1.getFileHash(fullPath);
+        var hash = (0, hashing_1.getFileHash)(fullPath);
         return { file: file, hash: hash, size: size };
     });
     // If !== null, means it's a valid file.
-    var predicate = function (details) { return !!details; };
+    var predicate = function (details) {
+        return !!details;
+    };
     var globbedFileDetails = fileDetails.filter(predicate);
     return globbedFileDetails;
 };
+exports.getFileDetails = getFileDetails;
 //# sourceMappingURL=file-details.js.map

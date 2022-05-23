@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "target": "ES5",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
         "declaration": true,
         "sourceMap": true,
         "strict": true,
         "rootDir": "src",
         "outDir": "dist",
-        "lib": [ "esnext" ]
+        "lib": [ "ESNext", "WebWorker" ]
     },
     "exclude": [ "node_modules", "dist" ]
 }

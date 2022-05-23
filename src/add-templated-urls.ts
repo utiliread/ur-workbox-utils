@@ -5,11 +5,7 @@ import {
   getFileDetails,
   getStringDetails,
 } from "./file-details";
-
-interface ManifestEntry {
-  url: string;
-  revision: string;
-}
+import type { ManifestTransform, ManifestTransformResult } from "workbox-build";
 
 const defaultGlobOptions: GlobOptions = {
   globDirectory: "./",
@@ -21,18 +17,13 @@ const defaultGlobOptions: GlobOptions = {
 export function addTemplatedURLs(
   templatedURLs: { [url: string]: string | string[] },
   globOptions: Partial<GlobOptions> = {}
-): (originalManifest: ReadonlyArray<ManifestEntry>) => {
-  manifest: ManifestEntry[];
-  warnings: string[];
-} {
+): ManifestTransform {
   const defaultedGlobOptions = Object.assign(defaultGlobOptions, globOptions);
 
   // See https://github.com/GoogleChrome/workbox/issues/2398#issuecomment-597080778
   // https://github.com/GoogleChrome/workbox/blob/master/packages/workbox-build/src/lib/get-file-manifest-entries.js
 
-  return (
-    originalManifest: ReadonlyArray<ManifestEntry>
-  ): { manifest: ManifestEntry[]; warnings: string[] } => {
+  const transform: ManifestTransform = (manifestEntries) => {
     const fileDetails: FileDetails[] = [];
     const warnings: string[] = [];
 
@@ -61,15 +52,21 @@ export function addTemplatedURLs(
       }
     }
 
-    const manifest = fileDetails
-      .map((x) => {
+    const manifest = manifestEntries.concat(
+      fileDetails.map((x) => {
         return {
           url: x.file,
           revision: x.hash,
+          size: x.size,
         };
       })
-      .concat(originalManifest);
+    );
 
-    return { manifest, warnings };
+    const result: ManifestTransformResult = {
+      manifest,
+      warnings,
+    };
+    return result;
   };
+  return transform;
 }

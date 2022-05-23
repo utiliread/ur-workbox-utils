@@ -13,7 +13,7 @@ function addTemplatedURLs(templatedURLs, globOptions) {
     var defaultedGlobOptions = Object.assign(defaultGlobOptions, globOptions);
     // See https://github.com/GoogleChrome/workbox/issues/2398#issuecomment-597080778
     // https://github.com/GoogleChrome/workbox/blob/master/packages/workbox-build/src/lib/get-file-manifest-entries.js
-    return function (originalManifest) {
+    var transform = function (manifestEntries) {
         var fileDetails = [];
         var warnings = [];
         for (var _i = 0, _a = Object.keys(templatedURLs); _i < _a.length; _i++) {
@@ -21,26 +21,32 @@ function addTemplatedURLs(templatedURLs, globOptions) {
             var dependencies = templatedURLs[url];
             if (Array.isArray(dependencies)) {
                 var details = dependencies.reduce(function (accumulated, globPattern) {
-                    var globbedFileDetails = file_details_1.getFileDetails(globPattern, defaultedGlobOptions);
+                    var globbedFileDetails = (0, file_details_1.getFileDetails)(globPattern, defaultedGlobOptions);
                     if (globbedFileDetails.length === 0) {
-                        warnings.push("Glob pattern '" + globPattern + "' did not resolve to any files");
+                        warnings.push("Glob pattern '".concat(globPattern, "' did not resolve to any files"));
                     }
                     return accumulated.concat(globbedFileDetails);
                 }, []);
-                fileDetails.push(file_details_1.getCompositeDetails(url, details));
+                fileDetails.push((0, file_details_1.getCompositeDetails)(url, details));
             }
             else {
-                fileDetails.push(file_details_1.getStringDetails(url, dependencies));
+                fileDetails.push((0, file_details_1.getStringDetails)(url, dependencies));
             }
         }
-        var manifest = fileDetails.map(function (x) {
+        var manifest = manifestEntries.concat(fileDetails.map(function (x) {
             return {
                 url: x.file,
                 revision: x.hash,
+                size: x.size,
             };
-        }).concat(originalManifest);
-        return { manifest: manifest, warnings: warnings };
+        }));
+        var result = {
+            manifest: manifest,
+            warnings: warnings,
+        };
+        return result;
     };
+    return transform;
 }
 exports.addTemplatedURLs = addTemplatedURLs;
 //# sourceMappingURL=add-templated-urls.js.map
