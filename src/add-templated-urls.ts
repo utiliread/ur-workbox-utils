@@ -19,7 +19,7 @@ export interface ManifestEntry {
 }
 
 type WebpackManifestTransform = (
-  originalManifest: ReadonlyArray<ManifestEntry & { size: number }>
+  originalManifest: ReadonlyArray<ManifestEntry>
 ) => {
   manifest: (ManifestEntry & { size: number })[];
   warnings?: string[] | undefined;
@@ -63,15 +63,16 @@ export function addTemplatedURLs(
       }
     }
 
-    const manifest = manifestEntries.concat(
-      fileDetails.map((x) => {
+    const manifest = [
+      ...manifestEntries.map((x) => Object.assign({}, { size: 0 }, x)),
+      ...fileDetails.map((x) => {
         return {
           url: x.file,
           revision: x.hash,
           size: x.size,
         };
-      })
-    );
+      }),
+    ];
 
     return {
       manifest,

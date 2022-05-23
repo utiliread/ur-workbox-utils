@@ -3,9 +3,7 @@ export interface ManifestEntry {
     revision: string;
     url: string;
 }
-declare type WebpackManifestTransform = (originalManifest: ReadonlyArray<ManifestEntry & {
-    size: number;
-}>) => {
+declare type WebpackManifestTransform = (originalManifest: ReadonlyArray<ManifestEntry>) => {
     manifest: (ManifestEntry & {
         size: number;
     })[];

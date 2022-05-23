@@ -1,4 +1,13 @@
 "use strict";
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addTemplatedURLs = void 0;
 var file_details_1 = require("./file-details");
@@ -33,13 +42,13 @@ function addTemplatedURLs(templatedURLs, globOptions) {
                 fileDetails.push((0, file_details_1.getStringDetails)(url, dependencies));
             }
         }
-        var manifest = manifestEntries.concat(fileDetails.map(function (x) {
+        var manifest = __spreadArray(__spreadArray([], manifestEntries.map(function (x) { return Object.assign({}, { size: 0 }, x); }), true), fileDetails.map(function (x) {
             return {
                 url: x.file,
                 revision: x.hash,
                 size: x.size,
             };
-        }));
+        }), true);
         return {
             manifest: manifest,
             warnings: warnings,
