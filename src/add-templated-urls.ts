@@ -6,6 +6,8 @@ import {
   getStringDetails,
 } from "./file-details";
 
+import type { ManifestTransform } from "workbox-build";
+
 const defaultGlobOptions: GlobOptions = {
   globDirectory: "./",
   globFollow: true,
@@ -13,28 +15,16 @@ const defaultGlobOptions: GlobOptions = {
   globStrict: true,
 };
 
-export interface ManifestEntry {
-  revision: string;
-  url: string;
-}
-
-type WebpackManifestTransform = (
-  originalManifest: ReadonlyArray<ManifestEntry>
-) => {
-  manifest: (ManifestEntry & { size: number })[];
-  warnings?: string[] | undefined;
-};
-
 export function addTemplatedURLs(
   templatedURLs: { [url: string]: string | string[] },
   globOptions: Partial<GlobOptions> = {}
-): WebpackManifestTransform {
+): ManifestTransform {
   const defaultedGlobOptions = Object.assign(defaultGlobOptions, globOptions);
 
   // See https://github.com/GoogleChrome/workbox/issues/2398#issuecomment-597080778
   // https://github.com/GoogleChrome/workbox/blob/master/packages/workbox-build/src/lib/get-file-manifest-entries.js
 
-  const transform: WebpackManifestTransform = (manifestEntries) => {
+  const transform: ManifestTransform = (manifestEntries) => {
     const fileDetails: FileDetails[] = [];
     const warnings: string[] = [];
 
